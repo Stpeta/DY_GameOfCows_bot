@@ -59,8 +59,10 @@ def list_games() -> List[Game]:
 
 
 def create_game(host_id: int, title: str, description: str,
-                decay: float = 2.0, recovery: float = 1.0) -> Game:
-    code = generate_code()
+                decay: float = 2.0, recovery: float = 1.0,
+                code: str | None = None) -> Game:
+    if code is None:
+        code = generate_code()
     game = Game(code=code,
                 title=title,
                 description=description,
