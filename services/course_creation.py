@@ -3,7 +3,7 @@ from datetime import datetime
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from database.models import Course
+from database.models import Game
 
 
 async def create_course(
@@ -11,10 +11,10 @@ async def create_course(
     host_id: int,
     name: str,
     description: str,
-) -> Course:
+) -> Game:
     """Create a new course and persist it to the database."""
     registration_code = secrets.token_hex(4)
-    course = Course(
+    course = Game(
         name=name,
         description=description,
         host_telegram_id=host_id,

@@ -5,7 +5,7 @@ from aiogram.fsm.state import State, StatesGroup
 from aiogram.types import CallbackQuery, Message
 
 from config_data.config import load_config
-from database.database import async_session_maker
+from database.base import async_session_maker
 from lexicon.lexicon_en import LEXICON_EN
 from keyboards.admin import admin_main_keyboard
 from services.course_creation import create_course

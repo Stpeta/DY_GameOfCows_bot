@@ -10,7 +10,7 @@ class Base(DeclarativeBase):
     """Base declarative class for all models."""
 
 
-class Course(Base):
+class Game(Base):
     """Model representing a game course."""
 
     __tablename__ = "courses"

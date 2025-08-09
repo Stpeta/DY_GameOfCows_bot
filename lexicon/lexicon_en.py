@@ -1,5 +1,4 @@
 LEXICON_EN: dict[str, str] = {
-    "/about": "Hello! I am your personal assistant bot.",
     "host_menu_inactive": "Completed courses: {count}",
     "new_course_button": "New course",
     "show_finished_courses_button": "Show finished courses",

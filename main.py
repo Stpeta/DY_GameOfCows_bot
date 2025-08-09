@@ -3,14 +3,14 @@ import logging
 
 from aiogram import Bot, Dispatcher
 from config_data.config import Config, load_config
-from database.database import init_db
+from database.base import init_db
 from handlers.handlers_other import other_router
 from handlers.handlers_player import player_router
 from handlers.handlers_host import host_router
 
 # Настраиваем базовую конфигурацию логирования
 logging.basicConfig(
-    level=logging.DEBUG,
+    level=logging.INFO,
     format='[%(asctime)s] #%(levelname)-8s %(filename)s:'
            '%(lineno)d - %(name)s - %(message)s'
 )

@@ -18,3 +18,4 @@ async def get_session() -> AsyncSession:
     """Provide a transactional scope around a series of operations."""
     async with async_session_maker() as session:
         yield session
+
