@@ -11,9 +11,9 @@ class Base(DeclarativeBase):
 
 
 class Game(Base):
-    """Model representing a game course."""
+    """Model representing a game."""
 
-    __tablename__ = "courses"
+    __tablename__ = "games"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(100))
@@ -32,7 +32,7 @@ class Player(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     telegram_id: Mapped[int] = mapped_column(Integer, unique=True)
-    game_id: Mapped[int] = mapped_column(ForeignKey("courses.id"))
+    game_id: Mapped[int] = mapped_column(ForeignKey("games.id"))
     registration_time: Mapped[datetime] = mapped_column(
         DateTime, default=datetime.utcnow
     )
