@@ -39,3 +39,4 @@ class Player(Base):
     name: Mapped[str] = mapped_column(String(100))
     nickname: Mapped[str] = mapped_column(String(100))
     is_registered: Mapped[bool] = mapped_column(Boolean, default=False)
+    balance: Mapped[int] = mapped_column(Integer, default=0)

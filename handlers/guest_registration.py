@@ -11,6 +11,7 @@ from database.base import async_session_maker
 from database.models import Game, Player
 from filters.role_filter import RoleFilter
 from lexicon.lexicon_en import LEXICON_EN
+from handlers.handlers_host import refresh_waiting_message
 
 
 guest_router = Router()
@@ -71,3 +72,4 @@ async def process_nickname(message: Message, state: FSMContext) -> None:
             game=data["game_name"], name=data["name"]
         )
     )
+    await refresh_waiting_message(data["game_id"], message.bot)

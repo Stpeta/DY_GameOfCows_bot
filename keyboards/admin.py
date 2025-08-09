@@ -19,3 +19,33 @@ def admin_main_keyboard() -> InlineKeyboardMarkup:
             ],
         ]
     )
+
+
+def waiting_players_keyboard() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text=LEXICON_EN["start_game_button"], callback_data="start_game"
+                ),
+                InlineKeyboardButton(
+                    text=LEXICON_EN["finish_game_button"], callback_data="finish_game"
+                ),
+            ]
+        ]
+    )
+
+
+def host_game_keyboard() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text=LEXICON_EN["start_day_button"], callback_data="start_day"
+                ),
+                InlineKeyboardButton(
+                    text=LEXICON_EN["finish_game_button"], callback_data="finish_game"
+                ),
+            ]
+        ]
+    )
