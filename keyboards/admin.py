@@ -49,3 +49,19 @@ def host_game_keyboard() -> InlineKeyboardMarkup:
             ]
         ]
     )
+
+
+def host_day_keyboard(day: int) -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text=LEXICON_EN["end_day_button"].format(day=day),
+                    callback_data="end_day",
+                ),
+                InlineKeyboardButton(
+                    text=LEXICON_EN["finish_game_button"], callback_data="finish_game"
+                ),
+            ]
+        ]
+    )
