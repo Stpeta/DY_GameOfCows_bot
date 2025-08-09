@@ -1,12 +1,21 @@
 from aiogram import Router, F
 from aiogram.filters import CommandStart, Command
-from aiogram.types import Message
+from aiogram.types import Message, CallbackQuery
+from aiogram.fsm.context import FSMContext
 
 from config_data.config import load_config
-from keyboards.admin import admin_main_kb
+from keyboards.admin_inline import games_list_kb, back_to_games_kb
 from keyboards.player import hours_kb
 from lexicon.lexicon_en import LEXICON_EN
-from services.services import create_game, list_games, start_day, end_day
+from services.services import start_day, end_day
+from services.game_creation import (
+    GameCreation,
+    list_admin_games,
+    get_game_info,
+    start_creation,
+    set_title,
+    set_description,
+)
 
 config = load_config()
 admin_router = Router()
@@ -15,24 +24,44 @@ admin_router.message.filter(F.from_user.id.in_(config.tg_bot.admin_ids))
 
 @admin_router.message(CommandStart())
 async def admin_start(message: Message):
-    games = list_games()
+    games = list_admin_games(message.from_user.id)
     text = LEXICON_EN['/start_admin']
-    if games:
-        text += '\n\n' + '\n'.join(f"{g.title} ({g.code})" for g in games)
-    await message.answer(text, reply_markup=admin_main_kb())
+    await message.answer(text, reply_markup=games_list_kb(games))
 
 
-@admin_router.message(Command('newgame'))
-async def process_newgame(message: Message):
-    parts = message.text.split(maxsplit=2)
-    if len(parts) < 3:
-        await message.answer('Usage: /newgame <title> <description>')
+@admin_router.callback_query(F.data == 'new_game')
+async def cb_new_game(callback: CallbackQuery, state: FSMContext):
+    await callback.answer()
+    await start_creation(callback.message, state)
+
+
+@admin_router.callback_query(F.data.startswith('game_'))
+async def cb_show_game(callback: CallbackQuery):
+    game_id = int(callback.data.split('_')[1])
+    game = get_game_info(game_id)
+    if not game:
+        await callback.answer('Game not found', show_alert=True)
         return
-    _, title, description = parts
-    game = create_game(message.from_user.id, title, description)
-    await message.answer(LEXICON_EN['game_created'].format(title=title, code=game.code))
+    text = f"{game.title}\n{game.description}\nDays played: {game.days_in_game}"
+    await callback.message.edit_text(text, reply_markup=back_to_games_kb())
+    await callback.answer()
 
 
+@admin_router.callback_query(F.data == 'back_to_games')
+async def cb_back(callback: CallbackQuery):
+    games = list_admin_games(callback.from_user.id)
+    await callback.message.edit_text(LEXICON_EN['/start_admin'], reply_markup=games_list_kb(games))
+    await callback.answer()
+
+
+@admin_router.message(GameCreation.title)
+async def process_title(message: Message, state: FSMContext):
+    await set_title(message, state)
+
+
+@admin_router.message(GameCreation.description)
+async def process_description(message: Message, state: FSMContext):
+    await set_description(message, state)
 @admin_router.message(Command('start_day'))
 async def process_start_day(message: Message):
     parts = message.text.split(maxsplit=1)
