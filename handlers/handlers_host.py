@@ -4,16 +4,15 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.types import CallbackQuery, Message
 
-from config_data.config import load_config
 from database.base import async_session_maker
 from lexicon.lexicon_en import LEXICON_EN
 from keyboards.admin import admin_main_keyboard
 from services.course_creation import create_course
-
-config = load_config()
-HOST_IDS = config.tg_bot.host_ids
+from filters.role_filter import RoleFilter
 
 host_router = Router()
+host_router.message.filter(RoleFilter("host"))
+host_router.callback_query.filter(RoleFilter("host"))
 
 
 class NewCourse(StatesGroup):
@@ -22,7 +21,7 @@ class NewCourse(StatesGroup):
     waiting_for_players = State()
 
 
-@host_router.message(CommandStart(), F.from_user.id.in_(HOST_IDS))
+@host_router.message(CommandStart())
 async def host_start(message: Message) -> None:
     await message.answer(
         LEXICON_EN["host_menu_inactive"].format(count=0),

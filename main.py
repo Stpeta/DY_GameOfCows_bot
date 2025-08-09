@@ -4,7 +4,7 @@ import logging
 from aiogram import Bot, Dispatcher
 from config_data.config import Config, load_config
 from database.base import init_db
-from handlers.handlers_other import other_router
+from handlers.guest_registration import guest_router
 from handlers.handlers_player import player_router
 from handlers.handlers_host import host_router
 
@@ -35,7 +35,7 @@ async def main() -> None:
     # Регистрируем роутеры в диспетчере
     dp.include_router(host_router)
     dp.include_router(player_router)
-    dp.include_router(other_router)
+    dp.include_router(guest_router)
 
     # Запускаем polling
     await dp.start_polling(bot)

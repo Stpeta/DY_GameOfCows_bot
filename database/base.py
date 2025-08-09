@@ -5,7 +5,9 @@ from .models import Base
 DATABASE_URL = "sqlite+aiosqlite:///database.db"
 
 engine = create_async_engine(DATABASE_URL, echo=False)
-async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
+# Session factory used across the project
+AsyncSessionLocal = async_sessionmaker(engine, expire_on_commit=False)
+async_session_maker = AsyncSessionLocal
 
 
 async def init_db() -> None:
