@@ -5,6 +5,7 @@ from environs import Env
 class TgBot:
     token: str  # Token for access to the telegram bot
     admin_ids: list[int]  # lists of administrators id
+    host_ids: list[int]
 
 
 @dataclass
@@ -20,6 +21,7 @@ def load_config(path: str | None = None) -> Config:
     return Config(
         tg_bot=TgBot(
             token=env('BOT_TOKEN'),
-            admin_ids=list(map(int, env.list('ADMIN_IDS')))
+            admin_ids=list(map(int, env.list('ADMIN_IDS'))),
+            host_ids=list(map(int, env.list('HOST_IDS')))
         )
     )

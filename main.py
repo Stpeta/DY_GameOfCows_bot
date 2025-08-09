@@ -3,10 +3,7 @@ import logging
 
 from aiogram import Bot, Dispatcher
 from config_data.config import Config, load_config
-from handlers.handlers_other import other_router
-from handlers.handlers_player import player_router
-from handlers.handlers_admin import admin_router
-from keyboards.set_menu import set_main_menu
+from handlers.handlers_player import admin_router
 
 # Настраиваем базовую конфигурацию логирования
 logging.basicConfig(
@@ -28,11 +25,9 @@ async def main() -> None:
     # Инициализируем бот и диспетчер
     bot = Bot(token=config.tg_bot.token)
     dp = Dispatcher()
-    await set_main_menu(bot)
 
     # Регистрируем роутеры в диспетчере
-    dp.include_router(admin_router)
-    dp.include_router(player_router)
+    dp.include_router(user_router)
     dp.include_router(other_router)
 
     # Здесь будем регистрировать миддлвари
