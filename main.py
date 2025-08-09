@@ -5,7 +5,7 @@ from aiogram import Bot, Dispatcher
 from config_data.config import Config, load_config
 from handlers.handlers_other import other_router
 from handlers.handlers_player import player_router
-from handlers.handlers_host import admin_router
+from handlers.handlers_host import host_router
 
 # Настраиваем базовую конфигурацию логирования
 logging.basicConfig(
@@ -29,7 +29,7 @@ async def main() -> None:
     dp = Dispatcher()
 
     # Регистрируем роутеры в диспетчере
-    dp.include_router(admin_router)
+    dp.include_router(host_router)
     dp.include_router(player_router)
     dp.include_router(other_router)
 
